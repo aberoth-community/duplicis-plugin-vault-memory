@@ -1,0 +1,1 @@
+# duplicis-plugin-vault-memory
