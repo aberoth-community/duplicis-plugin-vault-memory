@@ -12,7 +12,7 @@ the bank's native balance is still shown and remembered when the setting is off.
 
 ## Installation
 
-Build with Node 22 or newer and the pnpm version pinned in `package.json`:
+Build with Node 22.12 or newer and the pnpm version pinned in `package.json`:
 
 ```bash
 pnpm install --frozen-lockfile
@@ -60,9 +60,9 @@ The build, public type check, and memory parsing unit tests work independently o
 client checkout. The runtime source is checked against `@duplicis/types`; private core
 types and workspace dependencies are not needed to build the distribution.
 
-`pnpm test` runs the unit and controller integration suites. Integration tests exercise
+`pnpm test` runs the unit and controller integration suites with Vitest. Integration tests exercise
 the real utility and chat adapters using the compatible client's native-game fixtures.
-Electron tests build both projects, install the actual external bundle in temporary
+Playwright Electron tests build both projects, install the actual external bundle in temporary
 storage, and verify persistence, profile isolation, settings, commands, and teardown.
 They do not install into a player's plugin directory or modify a player's database.
 

@@ -5,10 +5,9 @@ import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const candidates = [resolve(root, '../types'), resolve(root, '../duplicis/packages/types')]
+const args = process.argv.slice(2).filter((arg) => arg !== '--')
 const source = resolve(
-  process.argv[2] ??
-    candidates.find((path) => existsSync(resolve(path, 'package.json'))) ??
-    candidates[0],
+  args[0] ?? candidates.find((path) => existsSync(resolve(path, 'package.json'))) ?? candidates[0],
 )
 const manifest = JSON.parse(await readFile(resolve(source, 'package.json'), 'utf8'))
 if (
@@ -24,7 +23,7 @@ await mkdir(snapshot, { recursive: true })
 await cp(resolve(source, 'src'), resolve(snapshot, 'src'), { recursive: true })
 await cp(resolve(source, 'package.json'), resolve(snapshot, 'package.json'))
 const target = resolve(root, 'node_modules/@duplicis/types')
-const installed = await lstat(target).catch((error) => {
+const installed = await lstat(target).catch((error: NodeJS.ErrnoException) => {
   if (error.code !== 'ENOENT') throw error
 })
 if (installed) {

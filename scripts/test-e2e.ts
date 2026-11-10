@@ -32,8 +32,10 @@ if (!pnpmCli) {
   process.exit(1)
 }
 
-const env = { ...process.env, DUPLICIS_CLIENT_ROOT: clientRoot }
-const run = (cwd, args) => {
+const env: NodeJS.ProcessEnv = { ...process.env, DUPLICIS_CLIENT_ROOT: clientRoot }
+// vite-node sets development mode before this script runs; builds need Vite's normal default.
+if (env.NODE_ENV === 'development') delete env.NODE_ENV
+const run = (cwd: string, args: string[]) => {
   const result = spawnSync(process.execPath, [pnpmCli, ...args], { cwd, env, stdio: 'inherit' })
   if (result.error) throw result.error
   if (result.status !== 0) process.exit(result.status ?? 1)
@@ -49,6 +51,6 @@ run(clientRoot, [
   'playwright',
   'test',
   '--config',
-  resolve(pluginRoot, 'playwright.config.js'),
-  ...process.argv.slice(2),
+  resolve(pluginRoot, 'playwright.config.ts'),
+  ...process.argv.slice(2).filter((arg) => arg !== '--'),
 ])
