@@ -26,9 +26,9 @@
     "lint:tsc": "tsc --noEmit",
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "vitest run",
-    "test:integration": "node scripts/test-integration.mjs",
-    "test:e2e": "node scripts/test-e2e.mjs",
-    "types:local": "node scripts/use-local-types.mjs",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "vite-node --script scripts/test-e2e.ts --",
+    "types:local": "vite-node --script scripts/use-local-types.ts --",
     "format-check": "prettier --check .",
     "prepack": "pnpm build"
   },
@@ -46,6 +46,7 @@
     "typescript": "^6.0.3",
     "typesafe-i18n": "^5.27.1",
     "vite": "^8.1.5",
+    "vite-node": "^6.0.0",
     "vitest": "^4.1.10"
   }
 }
