@@ -28,12 +28,11 @@
     "test:unit": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "vite-node --script scripts/test-e2e.ts --",
-    "types:local": "vite-node --script scripts/use-local-types.ts --",
     "format-check": "prettier --check .",
     "prepack": "pnpm build"
   },
   "devDependencies": {
-    "@duplicis/types": "github:aberoth-community/duplicis-types#892a8bd2101a373bebee3d879ef5fe6d1153839f",
+    "@duplicis/types": "^1.0.0",
     "@duplicis/i18n": "github:aberoth-community/duplicis-i18n#d2734c6551525903d4f4696c73f42e238783ab64",
     "@schemastore/package": "^0.0.10",
     "@types/node": "^22",

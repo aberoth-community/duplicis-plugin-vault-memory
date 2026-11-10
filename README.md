@@ -61,7 +61,10 @@ client checkout. The runtime source is checked against `@duplicis/types`; privat
 types and workspace dependencies are not needed to build the distribution.
 
 `pnpm test` runs the unit and controller integration suites with Vitest. Integration tests exercise
-the real utility and chat adapters using the compatible client's native-game fixtures.
+the real utility and chat adapters using the compatible client's supported fixtures in
+`test/unit/game.ts` and `test/unit/chat.ts`. The chat fixture exposes `ChatSystemApi`,
+command registration with owner cleanup, keyboard simulation, and teardown; tests do not
+import private chat controllers or registries.
 Playwright Electron tests build both projects, install the actual external bundle in temporary
 storage, and verify persistence, profile isolation, settings, commands, and teardown.
 They do not install into a player's plugin directory or modify a player's database.
@@ -79,9 +82,12 @@ Install dependencies in both checkouts first. A standalone plugin checkout shoul
 Vitest or Playwright arguments, for example `pnpm test:integration -t "server protocol"`
 or `pnpm test:e2e --grep "external plugin"`.
 
-`pnpm types:local /path/to/duplicis/packages/types` can copy updated public declarations
-into an ignored local snapshot while developing a public API change. It does not expose
-private core types or change the published dependency pins.
+Public declarations are installed from the npm package `@duplicis/types`; no declaration
+folders are copied from a client checkout. The published package must include the public
+utility and chat APIs (`ChatSystemApi`, `PluginUtilsScope`, and the `@duplicis/core` and
+`@duplicis/plugin-chat-system` module declarations). npm version `1.0.0` predates these APIs;
+until an updated version is published, the standalone type check cannot pass. After that
+release, run `pnpm update @duplicis/types` and commit the updated lockfile.
 
 ## Recall commands
 

@@ -6,7 +6,7 @@ import type {
   PluginUtilsScope,
   TextEvent,
   UtilitySession,
-} from '@duplicis/core'
+} from '@duplicis/types'
 import { emptyMemory, parseInventory, recall, vaultKind } from './memory'
 import type { CharacterMemory, VaultKind, VaultMemory } from './memory'
 

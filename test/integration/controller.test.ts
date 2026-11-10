@@ -1,8 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GameConstants as C } from '@duplicis/core'
 import { gameFixture } from '@duplicis/test/game'
-import { ChatController } from '@duplicis/test/chat-controller'
-import { CommandRegistry } from '@duplicis/test/chat-commands'
+import { chatFixture } from '@duplicis/test/chat'
 import {
   BankVaultMemoryController,
   CATEGORY_REQUEST_DELAY_MS,
@@ -32,20 +31,20 @@ const nextCategory = async () => {
 
 function fixture(initial = emptyMemory(), load?: (player: string) => Promise<CharacterMemory>) {
   const f = gameFixture()
-  const registry = new CommandRegistry()
-  const chat = new ChatController(f.scope, registry)
+  const chatTest = chatFixture(f.scope)
+  const { chat } = chatTest
   const saved: { player: string; memory: CharacterMemory }[] = []
   const scope = f.utils.createScope({ name: 'memory', profileId: 1, report: () => {} })
   const controller = new BankVaultMemoryController(
     scope,
     () => chat,
-    (command) => registry.register(command, scope),
+    (command) => chatTest.registerCommand(command, scope),
     load ?? (async (player) => (player === 'Tester' ? initial : emptyMemory())),
     (player, memory) => saved.push({ player, memory: structuredClone(memory) }),
   )
   cleanups.push(() => {
     controller.dispose()
-    chat.dispose()
+    chatTest.dispose()
     scope.dispose()
     f.scope.dispose()
   })
@@ -64,7 +63,7 @@ function fixture(initial = emptyMemory(), load?: (player: string) => Promise<Cha
     }
     return result
   }
-  return { ...f, scope, chat, controller, saved, hint, enter, requests }
+  return { ...f, scope, chat, chatTest, controller, saved, hint, enter, requests }
 }
 
 describe('bank and vault memory server protocol', () => {
@@ -452,7 +451,7 @@ describe('bank and vault memory server protocol', () => {
   it('preserves a composed draft while scanning and receiving server notifications', async () => {
     const f = fixture()
     const key = (name: string) =>
-      f.chat.keyDown({
+      f.chatTest.keyDown({
         key: name,
         keyCode: name === 'Enter' ? 13 : name.toUpperCase().charCodeAt(0),
         preventDefault: () => {},
