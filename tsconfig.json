@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
@@ -10,8 +13,13 @@
     "noUncheckedSideEffectImports": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node", "vite/client"]
+    "types": [
+      "node",
+      "vite/client"
+    ]
   },
-  "include": ["src", "scripts/**/*.ts", "*.config.ts"],
-  "exclude": ["src/**/*.test.ts", "test"]
+  "include": [
+    "src",
+    "vite.config.ts"
+  ]
 }

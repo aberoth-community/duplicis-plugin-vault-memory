@@ -45,49 +45,34 @@ client with a temporary installation. Restart that command to load rebuilt bundl
 
 ## Development and tests
 
-From this plugin repository:
+The plugin builds and type-checks with its public GitHub-pinned `@duplicis/types` dependency:
 
 ```bash
 pnpm build
 pnpm lint:tsc
-pnpm test:unit
-pnpm test:integration
-pnpm test:e2e
+pnpm format
 pnpm format-check
 ```
 
-The build, public type check, and memory parsing unit tests work independently of the
-client checkout. The runtime source is checked against `@duplicis/types`; private core
-types and workspace dependencies are not needed to build the distribution.
-
-`pnpm test` runs the unit and controller integration suites with Vitest. Integration tests exercise
-the real utility and chat adapters using the compatible client's supported fixtures in
-`test/unit/game.ts` and `test/unit/chat.ts`. The chat fixture exposes `ChatSystemApi`,
-command registration with owner cleanup, keyboard simulation, and teardown; tests do not
-import private chat controllers or registries.
-Playwright Electron tests build both projects, install the actual external bundle in temporary
-storage, and verify persistence, profile isolation, settings, commands, and teardown.
-They do not install into a player's plugin directory or modify a player's database.
-
-The client checkout is detected automatically when this repo is a Duplicis submodule or
-a sibling of a checkout named `duplicis`. Otherwise specify it explicitly (Git Bash):
+Tests live in the Duplicis repository and use its existing Vitest, Playwright, and Electron
+fixtures. Initialize the submodules and install dependencies once at the Duplicis root.
+Run these commands from that root:
 
 ```bash
-DUPLICIS_CLIENT_ROOT="/d/Git Repos/duplicis" pnpm test:integration
-DUPLICIS_CLIENT_ROOT="/d/Git Repos/duplicis" pnpm test:e2e
+pnpm test:unit test/unit/vault-memory
+pnpm build
+pnpm test:e2e vault-memory
 ```
 
-Install dependencies in both checkouts first. A standalone plugin checkout should use
-`pnpm install --frozen-lockfile --ignore-workspace`. To test only part of a suite, pass
-Vitest or Playwright arguments, for example `pnpm test:integration -t "server protocol"`
-or `pnpm test:e2e --grep "external plugin"`.
-
-Public declarations are installed from the npm package `@duplicis/types`; no declaration
-folders are copied from a client checkout. The published package must include the public
-utility and chat APIs (`ChatSystemApi`, `PluginUtilsScope`, and the `@duplicis/core` and
-`@duplicis/plugin-chat-system` module declarations). npm version `1.0.0` predates these APIs;
-until an updated version is published, the standalone type check cannot pass. After that
-release, run `pnpm update @duplicis/types` and commit the updated lockfile.
+The first command runs memory parsing and controller integration tests in `test/unit`.
+Build the workspace before running Electron tests. The last command runs
+`test/e2e/src/spec/vault-memory.test.ts`.
+Electron tests install the emitted external bundle in temporary storage and verify identity,
+persistence, profiles, settings, commands, and teardown without touching a player's database.
+These tests also participate in the client's normal unit and Electron suites.
+No separate test dependency installation, client path discovery, or test runner script is needed
+in this submodule. For a focused Electron run after building, use
+`pnpm -C test/e2e test vault-memory --grep "external plugin"` from the client root.
 
 ## Recall commands
 
