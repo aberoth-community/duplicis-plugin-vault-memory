@@ -1,0 +1,45 @@
+{
+  "name": "@duplicis/plugin-bank-vault-memory",
+  "version": "1.0.0",
+  "description": "Remember bank gold and private or guild vault inventories.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "license": "LGPL-2.1-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aberoth-community/duplicis-plugin-vault-memory.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "duplicis": {
+    "displayName": "vault memory"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.15.1",
+  "scripts": {
+    "build": "vite build",
+    "lint:tsc": "tsc --noEmit",
+    "prepack": "pnpm build"
+  },
+  "devDependencies": {
+    "@duplicis/config": "^1.0.0",
+    "@duplicis/i18n": "github:aberoth-community/duplicis-i18n",
+    "@duplicis/types": "github:aberoth-community/duplicis-types",
+    "@schemastore/package": "^0.0.10",
+    "@types/node": "^22",
+    "@zag-js/toast": "1.42.0",
+    "component-emitter": "^2.0.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-svelte": "^3.4.1",
+    "prettier-plugin-tailwindcss": "^0.7.0",
+    "svelte": "5.56.7",
+    "typesafe-i18n": "^5.27.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.5"
+  }
+}
