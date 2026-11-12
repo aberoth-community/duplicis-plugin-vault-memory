@@ -27,8 +27,9 @@
     "prepack": "pnpm build"
   },
   "devDependencies": {
-    "@duplicis/types": "github:aberoth-community/duplicis-types",
+    "@duplicis/config": "^1.0.0",
     "@duplicis/i18n": "github:aberoth-community/duplicis-i18n",
+    "@duplicis/types": "github:aberoth-community/duplicis-types",
     "@schemastore/package": "^0.0.10",
     "@types/node": "^22",
     "@zag-js/toast": "1.42.0",
@@ -37,8 +38,8 @@
     "prettier-plugin-svelte": "^3.4.1",
     "prettier-plugin-tailwindcss": "^0.7.0",
     "svelte": "5.56.7",
-    "typescript": "^6.0.3",
     "typesafe-i18n": "^5.27.1",
+    "typescript": "^6.0.3",
     "vite": "^8.1.5"
   }
 }
