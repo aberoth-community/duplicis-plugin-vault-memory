@@ -1,5 +1,19 @@
+# Dependencies and build output
 node_modules/
 dist/
-test-results/
-*.tgz
+.pnpm-store/
+.svelte-kit/
+.vite/
 *.tsbuildinfo
+
+# Test output
+coverage/
+test-results/
+test-report/
+playwright-report/
+
+# Local files
+*.log
+.DS_Store
+Thumbs.db
+*.tgz
