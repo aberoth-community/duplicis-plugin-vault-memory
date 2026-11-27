@@ -10,6 +10,8 @@ import Menu from './components/Menu.svelte'
 import './vault.css'
 import { ui } from './translations'
 
+const canRememberCharacter = (player: string) => !!player.trim() && !/\d/.test(player)
+
 export class BankVaultMemoryPlugin extends Plugin {
   static override name = '@duplicis/plugin-bank-vault-memory'
   static override icon = { component: Icon }
@@ -37,6 +39,7 @@ export class BankVaultMemoryPlugin extends Plugin {
   }
 
   private async load(player: string): Promise<CharacterMemory> {
+    if (!canRememberCharacter(player)) return emptyMemory()
     await this.writes
     const saved = await this.record(player).get()
     const memory = saved ? (readMemory(saved) ?? emptyMemory()) : emptyMemory()
@@ -45,6 +48,7 @@ export class BankVaultMemoryPlugin extends Plugin {
   }
 
   private save(player: string, memory: CharacterMemory): void {
+    if (!canRememberCharacter(player)) return
     this.view.remember(player, memory)
     const binding = this.record(player)
     const serialized = JSON.stringify(memory)
@@ -70,7 +74,9 @@ export class BankVaultMemoryPlugin extends Plugin {
         this.view.characters = [
           ...new Set(
             names
-              .filter((name): name is string => typeof name === 'string' && !!name.trim())
+              .filter(
+                (name): name is string => typeof name === 'string' && canRememberCharacter(name),
+              )
               .map((name) => name.toLowerCase()),
           ),
         ].sort()
@@ -85,7 +91,8 @@ export class BankVaultMemoryPlugin extends Plugin {
     const characterChanged = (player: string) => {
       if (this.exited) return
       this.view.current = player.toLowerCase()
-      if (!player || this.view.characters.includes(player.toLowerCase())) return
+      if (!canRememberCharacter(player) || this.view.characters.includes(player.toLowerCase()))
+        return
       this.view.characters = [...this.view.characters, player.toLowerCase()].sort()
       const serialized = JSON.stringify(this.view.characters)
       this.writes = this.writes

@@ -46,6 +46,8 @@ visited with this version, including across restarts. Older per-character memori
 available and enter the selector when that character is next visited; there was no saved
 character directory in earlier versions. The first new scan uses an existing saved inventory
 as its baseline. Earlier historical changes cannot be reconstructed from a single snapshot.
+Character names containing digits are excluded from saved memories and the character
+selector. Previously saved entries with digits are hidden without deleting their stored data.
 
 ## Installation
 
