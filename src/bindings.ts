@@ -2,6 +2,25 @@ import type { Duplicis } from '@duplicis/types'
 import { DEFAULT_GUILD_PATTERN, DEFAULT_VAULT_PATTERN } from './controller'
 
 export const createBindings = (plugin: Duplicis.Plugin) => ({
+  showSidebar: plugin.config('show_sidebar', 'bool', {
+    default: true,
+    i18n: {
+      en: {
+        display_name: 'Show vault sidebar',
+        description:
+          'Show the vault memory sidebar. Memory gathering and recall commands continue when hidden.',
+      },
+      es: {
+        display_name: 'Mostrar panel de bóveda',
+        description:
+          'Muestra el panel de memoria. La recopilación y los comandos siguen activos al ocultarlo.',
+      },
+      'pt-BR': {
+        display_name: 'Mostrar painel do cofre',
+        description: 'Mostra o painel de memória. A coleta e os comandos continuam quando oculto.',
+      },
+    },
+  }),
   showBankBalance: plugin.config('show_bank_balance', 'bool', {
     default: true,
     i18n: {

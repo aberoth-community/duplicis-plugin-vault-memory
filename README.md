@@ -10,6 +10,43 @@ status updates outside the bank. **Show bank balance outside the bank** controls
 appended balance and is enabled by default. Changes appear on the next status update;
 the bank's native balance is still shown and remembered when the setting is off.
 
+## Sidebar and history
+
+The vault icon opens a sidebar with a character selector (following the current character
+by default), private/guild storage selector, remembered bank and vault gold, and the age of
+the last observation. Hover the freshness label for the exact timestamp. Freshness updates
+while the sidebar is open. The cog in the header opens this plugin's settings directly.
+**Show vault sidebar** hides the icon and closes its menu immediately; gathering and recall
+commands continue working. This setting persists per profile.
+
+Expand a category to read its saved inventory. Each category shows its current count and
+the last observed gain or loss. An unchanged scan keeps that change badge; `—` indicates
+there is no comparison yet. Categories/items that disappear receive a zero observation,
+so their losses and subsequent returns remain visible. Guild changes describe observed
+quantities, without attributing activity to a player.
+
+Individual items inside each category show the difference from the previous completed scan:
+green `+x` for gains, red `-x` for losses, and no badge for unchanged quantities or a first
+observation. An unchanged scan clears item badges without adding history points. Removed
+items remain visible with a zero quantity so their losses can still be seen.
+
+**Plot quantity** selects any saved category or individual item. **Time range** offers 1 day,
+1 week (the default), 1 month, and 3 months. Month ranges use calendar months. Exact dates
+and quantities are available under **History details**, shown when the selected plot has at
+least two samples. Switching ranges preserves the full
+three-month saved history.
+History updates only after a complete scan. If a quantity equals the previous sample,
+the previous point's timestamp moves to the new scan time instead of adding a point.
+Changed quantities append a point. Old points are pruned on completed scans, retaining
+one boundary observation to establish the quantity at the start of the window. The plot
+does not imply continuous live tracking between visits.
+
+Characters and memories are isolated by client profile. The selector remembers characters
+visited with this version, including across restarts. Older per-character memories remain
+available and enter the selector when that character is next visited; there was no saved
+character directory in earlier versions. The first new scan uses an existing saved inventory
+as its baseline. Earlier historical changes cannot be reconstructed from a single snapshot.
+
 ## Installation
 
 Build with Node 22.12 or newer and the pnpm version pinned in `package.json`:
@@ -129,3 +166,7 @@ API, scoped to the current client profile and this plugin. Internal bindings are
 hidden from settings. Writes are serialized and awaited on exit. Gold is stored as
 text to preserve large balances. The last completed inventory survives failed or
 canceled scans.
+Quantity history is an optional field in the existing version-1 memory record; earlier
+records need no database migration. Counts and differences are stored as exact integer
+strings. Plot coordinates use numeric approximations; the sample table retains exact values.
+A separate hidden configuration binding maintains the character directory.
