@@ -41,6 +41,8 @@
     "typesafe-i18n": "^5.27.1",
     "typescript": "^6.0.3",
     "vite": "^8.1.5",
-    "vite-plugin-javascript-obfuscator": "^3.1.0"
+    "vite-plugin-javascript-obfuscator": "^3.1.0",
+    "@sveltejs/vite-plugin-svelte": "7.2.0",
+    "svelte-check": "^4.7.3"
   }
 }

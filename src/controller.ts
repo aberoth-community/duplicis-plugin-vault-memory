@@ -7,7 +7,7 @@ import type {
   TextEvent,
   UtilitySession,
 } from '@duplicis/types'
-import { emptyMemory, parseInventory, recall, vaultKind } from './memory'
+import { emptyMemory, parseInventory, recall, vaultKind, withHistory } from './memory'
 import type { CharacterMemory, VaultKind, VaultMemory } from './memory'
 
 export const RESPONSE_TIMEOUT_MS = 5000
@@ -294,7 +294,7 @@ export class BankVaultMemoryController {
         else {
           const draft = scan.draft!
           draft.lastUpdate = Date.now()
-          this.memory = { ...this.memory, [scan.kind]: draft }
+          this.memory = { ...this.memory, [scan.kind]: withHistory(this.memory[scan.kind], draft) }
           this.stop()
           this.save(this.player, this.memory)
           this.hint?.()
